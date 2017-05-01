@@ -1,0 +1,124 @@
+# - Conky settings - #
+
+update_interval 1.0
+total_run_times 0
+net_avg_samples 1
+cpu_avg_samples 1
+imlib_cache_size 0
+double_buffer yes
+no_buffers yes
+
+# - Text settings - #
+
+use_xft yes
+xftfont Sans:size=8
+xftalpha 1
+override_utf8_locale yes
+text_buffer_size 2048
+
+# - Window specifications - #
+
+own_window_class Conky
+own_window yes
+own_window_type normal
+own_window_argb_visual yes
+own_window_argb_value 0
+own_window_transparent yes
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+
+double_buffer yes
+minimum_size 200 200
+maximum_width 250
+draw_shades no
+draw_outline no
+draw_borders no
+draw_graph_borders no
+default_color white
+default_shade_color blue
+default_outline_color white
+alignment top_right
+gap_x 10
+gap_y 30
+no_buffers yes
+uppercase no
+
+own_window_colour 000000
+TEXT
+${font Santana:bold:size=16}SYSTEM ${hr 2}
+${font Santana:bold:size=10}Intel Corei3 CPU 2.40GHz
+${font Santana:bold:size=10}Running @${freq_g}GHz
+
+${font Santana:bold:size=10}CPU: ${voffset -6}${font Poky:size=16}${if_match ${cpu cpu0} >80}{color red}${else}${if_match ${cpu cpu0} >50}${color yellow}${else}${color white}${endif}${endif}P${font}${color white} ${hr 2}
+#cpu1
+${voffset 6}\
+${font Santana:bold:size=9}${color cyan}CPU1: ${font Santana:size=9}${cpu cpu0}% \
+${if_match ${cpu cpu0} >80}${color red}\
+${else}${if_match ${cpu cpu0} >50}${color yellow}\
+${else}${color green}${endif}${endif}${cpubar cpu0}
+#cpu1
+${font Santana:bold:size=9}${color cyan}CPU2: ${font Santana:size=9}${cpu cpu1}% \
+${if_match ${cpu cpu1} >80}${color red}\
+${else}${if_match ${cpu cpu1} >50}${color yellow}\
+${else}${color green}${endif}${endif}${cpubar cpu1}
+#cpu1
+${font Santana:bold:size=9}${color cyan}CPU3: ${font Santana:size=9}${cpu cpu2}% \
+${if_match ${cpu cpu2} >80}${color red}\
+${else}${if_match ${cpu cpu2} >50}${color yellow}\
+${else}${color green}${endif}${endif}${cpubar cpu2}
+#cpu1
+${font Santana:bold:size=9}${color cyan}CPU4: ${font Santana:size=9}${cpu cpu3}% \
+${if_match ${cpu cpu3} >80}${color red}\
+${else}${if_match ${cpu cpu3} >50}${color yellow}\
+${else}${color green}${endif}${endif}${cpubar cpu3}
+#
+
+${font Santana:bold:size=10}${color white}CORE TEMP ${hr 2}
+${voffset 5}\
+${font Santana:bold:size=10}${color grey}Core1: ${color light blue}${execi 30 sensors | grep 'Core 0' | cut -c16-19 }°C
+${font Santana:bold:size=10}${color grey}Core2: ${color light blue}${execi 30 sensors | grep 'Core 2' | cut -c16-19 }°C
+
+${font Santana:bold:size=10}${color white}MEMORY ${hr 2}
+${font Santana:normal:size=8}RAM $alignc $mem / $memmax $alignr $memperc%
+${if_match ${memperc} >80}${color red}\
+${else}${if_match ${memperc} >50}${color yello}\
+${else}${color green}${endif}${endif}$membar
+
+${font Santana:bold:size=10}${color white}HDD ${hr 2}
+${font Santana:normal:size=8}/ $alignc ${fs_used /} / ${fs_size /} $alignr ${fs_used_perc /}%
+${if_match ${fs_used_perc /} >80}${color red}\
+${else}${if_match ${fs_used_perc /} >50}${color yello}\
+${else}${color green}${endif}${endif}${fs_bar /}
+
+${font Santana:bold:size=10}${color white}BATTERY ${hr 2}
+${font Santana:size=9}Time Remaining: ${battery_time} (${battery_percent}%)
+#
+#${font Poky:size=15}a${goto 32}${voffset -12}${font Santana:bold:size=8}PROCESSI ${hr 2}${voffset 12}
+#${font Santana:normal:size=8}${top_mem name 1}${alignr}${top mem 1} %
+#${top_mem name 2}${alignr}${top mem 2} %
+#$font${top_mem name 3}${alignr}${top mem 3} %
+#$font${top_mem name 4}${alignr}${top mem 4} %
+
+${if_up wlan0}${font Santana:bold:size=10}${color white}NETWORK ${hr 2}${voffset 2}
+${font Santana:normal:size=8}${voffset 5}ESSID: $alignr ${wireless_essid wlan0}
+Connection quality: $alignr ${wireless_link_qual_perc wlan0}%
+${downspeedgraph wlan0}
+Down:${downspeed wla0} $alignr total: ${totaldown wlan0}
+${upspeedgraph wlan0}
+Up:${upspeed wlan0} $alignr total: ${totalup wlan0}
+${else}${if_up eth0}
+${font VariShapes Solid:size=14}Q${voffset -1}${font VariShapes Solid:size=14}q${voffset -7}${font Santana:bold:size=8} Network on ETH0 ${hr 2}${voffset 7}
+${font Santana:normal:size=8}IP local address: $alignr ${addr eth0}
+#${font Santana:normal:size=8}IP public address: ${alignr}${execi 10800 ./.publicip}
+${downspeedgraph eth0}
+DLS:${downspeed eth0} kb/s $alignr total: ${totaldown eth0}
+${upspeedgraph eth0}
+ULS:${upspeed eth0} kb/s $alignr total: ${totalup eth0}${endif}${endif}
+
+${font Santana:bold:size=8}NETWORK ${hr 2}
+${font Santana:normal:size=8}Gateway address: ${alignr}${gw_ip}
+${font Santana:normal:size=8}Local address: $alignr${addr wlan0}
+${font Santana:normal:size=8}Public address: ${alignr}${execi 1000 wget http://checkip.dyndns.org/ -q -O - | grep -Eo '\<[[:digit:]]{1,3}(\.[[:digit:]]{1,3}){3}\>'}
+#
+#
+#${font Santana:bold:size=8}SCORCIATOIE ${hr 2}
+#${font Santana:normal:size=8}Win+T$alignr Terminale
